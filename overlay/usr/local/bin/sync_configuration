@@ -15,12 +15,12 @@ fi
 
 # Generate nginx configuration from the base template
 SCHEME=https
-if [ "${ALLOW_INSECURE_ACCESS:-false}" = "true" ]
-then
-	SCHEME=http
-fi
+# if [ "${ALLOW_INSECURE_ACCESS:-false}" = "true" ]
+# then
+	# SCHEME=http
+# fi
 
-envsubst "\${NEXTCLOUD_HTTPS_PORT}" < "/usr/local/etc/nginx/conf.d/nextcloud.$SCHEME.conf.template" > "/usr/local/etc/nginx/conf.d/nextcloud.conf"
+# envsubst "\${NEXTCLOUD_HTTPS_PORT}" < "/usr/local/etc/nginx/conf.d/nextcloud.$SCHEME.conf.template" > "/usr/local/etc/nginx/conf.d/nextcloud.conf"
 
 # Copy Nextcloud custom configuration
 cp /root/config/truenas.config.php /usr/local/www/nextcloud/config/truenas.config.php

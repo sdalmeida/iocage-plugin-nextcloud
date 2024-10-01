@@ -5,11 +5,11 @@ set -eu
 # Load environment variable from /etc/iocage-env
 . load_env
 
-# Generate some configuration from templates.
-sync_configuration
-
 # Generate self-signed TLS certificates
 generate_self_signed_tls_certificates
+
+# Generate some configuration from templates.
+sync_configuration
 
 # Enable the necessary services
 sysrc -f /etc/rc.conf nginx_enable="YES"
@@ -20,7 +20,7 @@ sysrc -f /etc/rc.conf fail2ban_enable="YES"
 
 # Start the service
 service nginx start 2>/dev/null
-service php-fpm start 2>/dev/null
+service php_fpm start 2>/dev/null
 service mysql-server start 2>/dev/null
 service redis start 2>/dev/null
 
@@ -42,8 +42,8 @@ NCPASS=$(cat /root/ncpassword)
 # Configure mysql
 mysqladmin -u root password "${PASS}"
 mysql -u root -p"${PASS}" --connect-expired-password <<-EOF
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '${PASS}';
-CREATE USER '${USER}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${PASS}';
+ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY '${PASS}';
+CREATE USER '${USER}'@'localhost' IDENTIFIED WITH caching_sha2_password BY '${PASS}';
 GRANT ALL PRIVILEGES ON *.* TO '${USER}'@'localhost' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON ${DB}.* TO '${USER}'@'localhost';
 FLUSH PRIVILEGES;
